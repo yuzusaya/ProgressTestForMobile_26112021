@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ProgressTest.ViewModels"
+             xmlns:imageCircle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="ProgressTest.Views.UserDetailPage">
+    <ContentPage.Resources>
+        <xct:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <vm:UserDetailViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout Margin="20">
+            
+            <CollectionView ItemsSource="{Binding User.Products}">
+                <CollectionView.Header>
+                    <StackLayout>
+                        <imageCircle:CircleImage Source="{Binding User.ImagePath}" BorderColor="Yellow" BorderThickness="1" HeightRequest="90" WidthRequest="90"/>
+                        <Label Text="{Binding User.Year}"/>
+                        <xct:Expander x:Name="DescriptionExpander" IsExpanded="{Binding IsExpanded}">
+                            <xct:Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="{Binding User.Desctiption}" LineBreakMode="TailTruncation" MaxLines="2" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded,Converter={x:StaticResource InvertedBoolConverter}}"/>
+                                    <Label Grid.Column="1" TextColor="Orange" Text="Read More">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded}" Value="True">
+                                                <Setter Property="Text" Value="Read Less"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <!--<Label Grid.Column="1" TextColor="Orange" Text="Read More" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded,Converter={x:StaticResource InvertedBoolConverter}}"/>-->
+                                </Grid>
+                            </xct:Expander.Header>
+                            <Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ChangeIsExpandedCommand}"/>
+                                </Grid.GestureRecognizers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="{Binding User.Desctiption}" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded}"/>
+                                <!--<Label Grid.Column="1" TextColor="Orange" Text="Read Less" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded}"/>-->
+                            </Grid>
+                        </xct:Expander>
+                        <BoxView Color="black" HeightRequest="1"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Grid.Column="0">
+                                <Label Text="{Binding User.Record,StringFormat='${0}m'}" HorizontalTextAlignment="Center"/>
+                                <Label Text="Record" HorizontalTextAlignment="Center"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1">
+                                <Label Text="{Binding User.Average,StringFormat='${0}m'}" HorizontalTextAlignment="Center"/>
+                                <Label Text="Average" HorizontalTextAlignment="Center"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2">
+                                <Label Text="{Binding User.General,StringFormat='+{0}%'}" HorizontalTextAlignment="Center"/>
+                                <Label Text="General" HorizontalTextAlignment="Center"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="3">
+                                <Label Text="{Binding User.Products.Count}" HorizontalTextAlignment="Center"/>
+                                <Label Text="Items" HorizontalTextAlignment="Center"/>
+                            </StackLayout>
+                        </Grid>
+                        <BoxView Color="black" HeightRequest="1"/>
+                    </StackLayout>
+                </CollectionView.Header>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" HorizontalItemSpacing="30" VerticalItemSpacing="30" Span="2"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Image Source="{Binding ImagePath}"/>
+                            <Label Text="{Binding Title}"/>
+                            <Label Text="{Binding Price,StringFormat='${0}'}"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -13,12 +13,55 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout Margin="20">
-            
             <CollectionView ItemsSource="{Binding User.Products}">
                 <CollectionView.Header>
                     <StackLayout>
                         <imageCircle:CircleImage Source="{Binding User.ImagePath}" BorderColor="Yellow" BorderThickness="1" HeightRequest="90" WidthRequest="90"/>
                         <Label Text="{Binding User.Year}"/>
+                        <xct:Expander x:Name="DescriptionExpander" IsExpanded="{Binding IsExpanded}">
+                            <xct:Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="{Binding User.Desctiption}" LineBreakMode="TailTruncation" MaxLines="{Binding MaxLineNumbers}"/>
+                                    <Label Grid.Column="1" TextColor="Orange" Text="Read More">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded}" Value="True">
+                                                <Setter Property="Text" Value="Read Less"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </Grid>
+                            </xct:Expander.Header>
+                        </xct:Expander>
+                        <!-- alternative 2
+                        <xct:Expander x:Name="DescriptionExpander" IsExpanded="{Binding IsExpanded}">
+                            <xct:Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="{Binding User.Desctiption}" LineBreakMode="TailTruncation" MaxLines="2" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded,Converter={x:StaticResource InvertedBoolConverter}}"/>
+                                    <Label Grid.Column="1" TextColor="Orange" Text="Read More" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded,Converter={x:StaticResource InvertedBoolConverter}}"/>
+                                </Grid>
+                            </xct:Expander.Header>
+                            <Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ChangeIsExpandedCommand}"/>
+                                </Grid.GestureRecognizers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="{Binding User.Desctiption}" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded}"/>
+                                <Label Grid.Column="1" TextColor="Orange" Text="Read Less" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded}"/>
+                            </Grid>
+                        </xct:Expander>
+
+                        alternative 3
                         <xct:Expander x:Name="DescriptionExpander" IsExpanded="{Binding IsExpanded}">
                             <xct:Expander.Header>
                                 <Grid>
@@ -34,7 +77,6 @@
                                             </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
-                                    <!--<Label Grid.Column="1" TextColor="Orange" Text="Read More" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded,Converter={x:StaticResource InvertedBoolConverter}}"/>-->
                                 </Grid>
                             </xct:Expander.Header>
                             <Grid>
@@ -46,9 +88,8 @@
                                     <ColumnDefinition Width="70"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Text="{Binding User.Desctiption}" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded}"/>
-                                <!--<Label Grid.Column="1" TextColor="Orange" Text="Read Less" IsVisible="{Binding Source={x:Reference DescriptionExpander},Path=IsExpanded}"/>-->
                             </Grid>
-                        </xct:Expander>
+                        </xct:Expander>-->
                         <BoxView Color="black" HeightRequest="1"/>
                         <Grid>
                             <Grid.ColumnDefinitions>

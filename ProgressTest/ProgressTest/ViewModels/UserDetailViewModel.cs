@@ -13,8 +13,13 @@ namespace ProgressTest.ViewModels
         public bool IsExpanded
         {
             get => _isExpanded;
-            set => SetProperty(ref _isExpanded, value);
+            set
+            {
+                SetProperty(ref _isExpanded, value);
+                OnPropertyChanged(nameof(MaxLineNumbers));
+            }
         }
+        public int MaxLineNumbers => IsExpanded ? int.MaxValue : 2;
         public UserDetail User => new UserDetail()
         {
             ImagePath = "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg",
